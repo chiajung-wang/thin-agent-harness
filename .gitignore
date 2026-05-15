@@ -1,0 +1,53 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+
+# Node / JS (in case tooling lands later)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+dist/
+build/
+.cache/
+
+# Python (in case tooling lands later)
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Logs / tmp
+*.log
+tmp/
+.tmp/
+
+# Claude Code local-only state
+.claude/settings.local.json
+.claude/.cache/
+
+# Stage reports — keep dated archives, drop transient mirrors
+reports/latest.html
+reports/latest.json
+
+# Blackboard runtime state — keep template, ignore live edits if you prefer
+# (uncomment if blackboard.md should not be versioned)
+# blackboard.md
