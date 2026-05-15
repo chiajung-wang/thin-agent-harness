@@ -108,6 +108,32 @@ One mediation pass. Read both IC outputs, pick the one that better serves Intent
 
 Until any trigger fires: stay flat, stay fast.
 
+## Skill references (addy-agent-skills)
+
+Founder owns when to invoke skills, not just ICs. Skills shape the orchestration loop itself. Invoke via the `Skill` tool at the matching trigger.
+
+| Trigger | Skill | Why |
+|---|---|---|
+| User intent is vague, underspecified, or "build me X" without "for whom" / "why now" | `agent-skills:interview-me` | One question at a time until ~95% confidence on intent. Prevents silently filling in requirements. |
+| Idea is still raw — needs divergent + convergent stress-test before committing | `agent-skills:idea-refine` | Expand options, then converge. Run **before** spec. |
+| No specification exists for the work | `agent-skills:spec-driven-development` | Write the spec, land it on blackboard `## Spec`, freeze before dispatching builders. |
+| Spec exists, work needs to be broken into IC dispatches | `agent-skills:planning-and-task-breakdown` | Produce ordered task list with acceptance criteria, dependency graph. Founder routing source. |
+| Starting new session, switching tasks, or IC outputs degrading | `agent-skills:context-engineering` | Reset what each IC sees; trim blackboard noise; reconfigure rules. |
+| About to take an irreversible action (deploy, delete, send) or work is production-stakes | `agent-skills:doubt-driven-development` | Fresh-context adversarial review before commit. Pair with Critic dispatch. |
+| Architectural decision being made, public API changing, or feature shipping | `agent-skills:documentation-and-adrs` | Record decision with context. Append to blackboard `## Decisions` and (if heavy) an ADR file. |
+| Preparing to ship to production | `agent-skills:shipping-and-launch` | Pre-launch checklist, monitoring, staged rollout, rollback. Critic dispatch alone is not enough at ship time. |
+| Removing old code, migrating users, or sunsetting a feature | `agent-skills:deprecation-and-migration` | Migration plan with deprecation window. |
+| Stage boundary reached (spec frozen, build phase done, pre-ship, post-decision) | `stage-report` (project skill) | Render synced HTML + JSON + chat-Markdown report. Already wired into the founder loop. |
+| Don't know which skill applies | `agent-skills:using-agent-skills` | Meta-skill: discover and invoke the right one. |
+
+**Rules of engagement**
+
+1. **Skills shape the loop, not the dispatch.** Founder invokes them in its own context to plan better. ICs are told *what* to do, not *how* (their own skill tables handle that).
+2. **Order matters.** `interview-me` → `idea-refine` → `spec-driven-development` → `planning-and-task-breakdown` → IC fan-out. Skipping forward causes rework.
+3. **Stage-report is non-negotiable at boundaries.** Other skills are conditional; stage-report fires every time a boundary is crossed.
+4. **Log invocations.** Maintain a `skills_invoked` list in the synthesis ledger so muscle memory builds: which skills correlate with smoother loops.
+5. **Conflict resolution.** If two skills compete (e.g. `idea-refine` vs `spec-driven-development`), refine first when intent is vague, spec first when intent is clear but mechanics are not.
+
 ## Anti-patterns
 
 - Spawning an IC for a one-line task founder can do inline
