@@ -1,0 +1,67 @@
+{
+  "schema_version": "1",
+  "stage": "init-foundations",
+  "timestamp": "2026-05-15T16:20:00+08:00",
+  "intent": "Design an agentic system framed as a startup company structure — flat, low-bureaucracy — where a founder orchestrator delegates work to IC agents and synthesizes results back into a coherent deliverable that respects user intent.",
+  "tldr": "Topology chosen (flat startup), Founder agent and stage-report skill written; five IC agents still pending and blackboard now exists as the shared memory substrate.",
+  "mental_model": [
+    "Company-as-harness: a startup org chart maps onto an agentic system where ICs are specialist agents and the orchestrator is the founder.",
+    "Blackboard-first memory: a single shared markdown file holds Intent, Spec, Decisions, and Open questions — every agent reads from and appends to it.",
+    "Skill vs agent split: rigid, format-stable procedures (like stage reporting) live as project skills; autonomous task workers live as agents.",
+    "Human-agent dual rendering: each stage emits HTML (for humans, with a diagram) and JSON (for agents, machine-readable) from a single shared state model, so both sides share one mental model.",
+    "Muscle memory by repetition: a fixed four-layer report shape (TL;DR / Mental model / State delta / Open questions) trains the human reader to scan and absorb project state quickly."
+  ],
+  "state_delta": [
+    {"kind": "decision", "text": "Adopted the flat startup variant of the company-as-harness framing over the corporate multi-layer variant."},
+    {"kind": "decision", "text": "Added Marketer as a first-class IC alongside Builder, Designer, Researcher, Critic."},
+    {"kind": "decision", "text": "Stage reporting implemented as a project-level skill, not as a founder-scoped skill or a dedicated agent."},
+    {"kind": "decision", "text": "Reports emit three synced artifacts (chat Markdown, HTML with Mermaid diagram, JSON twin) from one render pass."},
+    {"kind": "decision", "text": "Skill is versioned (v1); shape changes ship as sibling skills to preserve human muscle memory."},
+    {"kind": "scope", "text": "Wrote agentic-startup-topology.md, .claude/agents/founder.md, .claude/skills/stage-report/SKILL.md, and blackboard.md."},
+    {"kind": "assumption", "text": "Founder will be the highest-traffic agent and can act as planner + router + synthesizer until context saturation is observed."},
+    {"kind": "risk", "text": "Founder becomes a context-window bottleneck as parallel IC count or blackboard size grows."},
+    {"kind": "risk", "text": "Skill drift if the four-layer report shape is mutated in place instead of versioned; human muscle memory collapses."}
+  ],
+  "open_questions": [
+    {"id": "q1", "text": "Which IC agent file to write next?", "default_if_silent": "Builder — highest-traffic IC for code-producing projects."},
+    {"id": "q2", "text": "Where does the runtime blackboard.md live in a deployed project?", "default_if_silent": "Project root, sibling to .claude/."},
+    {"id": "q3", "text": "Implement the fallback reporter agent now or defer until context pressure is observed?", "default_if_silent": "Defer."},
+    {"id": "q4", "text": "Add automatic growth-trigger detection (e.g., context saturation warning)?", "default_if_silent": "Defer; rely on founder judgement."}
+  ],
+  "diagram": {
+    "nodes": [
+      {"id": "intent", "label": "Intent: flat agentic startup", "type": "intent", "status": "in_progress"},
+      {"id": "d_topology", "label": "Decision: startup (flat) variant", "type": "decision", "status": "done"},
+      {"id": "d_skill_split", "label": "Decision: stage-report as project skill", "type": "decision", "status": "done"},
+      {"id": "blackboard", "label": "blackboard.md (shared memory)", "type": "component", "status": "done"},
+      {"id": "founder", "label": "Founder agent", "type": "component", "status": "done"},
+      {"id": "stage_report", "label": "stage-report skill (v1)", "type": "component", "status": "done"},
+      {"id": "builder", "label": "Builder IC", "type": "component", "status": "pending"},
+      {"id": "designer", "label": "Designer IC", "type": "component", "status": "pending"},
+      {"id": "researcher", "label": "Researcher IC", "type": "component", "status": "pending"},
+      {"id": "marketer", "label": "Marketer IC", "type": "component", "status": "pending"},
+      {"id": "critic", "label": "Critic IC", "type": "component", "status": "pending"},
+      {"id": "reporter", "label": "Reporter agent (fallback)", "type": "component", "status": "deferred"},
+      {"id": "q_next_ic", "label": "Which IC next?", "type": "question", "status": "pending"},
+      {"id": "r_bottleneck", "label": "Founder context bottleneck", "type": "risk", "status": "pending"},
+      {"id": "m_foundations", "label": "Milestone: foundations laid", "type": "milestone", "status": "done"}
+    ],
+    "edges": [
+      {"from": "d_topology", "to": "intent", "kind": "produces"},
+      {"from": "founder", "to": "d_topology", "kind": "decided_by"},
+      {"from": "founder", "to": "blackboard", "kind": "depends_on"},
+      {"from": "founder", "to": "stage_report", "kind": "produces"},
+      {"from": "stage_report", "to": "d_skill_split", "kind": "decided_by"},
+      {"from": "builder", "to": "founder", "kind": "depends_on"},
+      {"from": "designer", "to": "founder", "kind": "depends_on"},
+      {"from": "researcher", "to": "founder", "kind": "depends_on"},
+      {"from": "marketer", "to": "founder", "kind": "depends_on"},
+      {"from": "critic", "to": "founder", "kind": "depends_on"},
+      {"from": "q_next_ic", "to": "builder", "kind": "blocks"},
+      {"from": "founder", "to": "r_bottleneck", "kind": "blocks"},
+      {"from": "m_foundations", "to": "founder", "kind": "depends_on"},
+      {"from": "m_foundations", "to": "stage_report", "kind": "depends_on"}
+    ]
+  },
+  "prior_report": null
+}
