@@ -123,8 +123,8 @@ Common triggers:
 .
 ├── CLAUDE.md                        ← this file
 ├── agentic-startup-topology.md      ← topology design doc
-├── blackboard.md                    ← shared memory (runtime state)
-├── .gitignore
+├── blackboard.md                    ← harness-level shared memory (meta / dry-runs)
+├── .gitignore                       ← includes products/
 ├── .claude/
 │   ├── agents/
 │   │   ├── founder.md
@@ -136,11 +136,34 @@ Common triggers:
 │   ├── skills/
 │   │   └── stage-report/SKILL.md
 │   └── settings.local.json          ← git-ignored
-└── reports/
-    ├── 2026-05-15-1620-init-foundations.{html,json}
-    ├── 2026-05-15-1645-ic-roster-complete.{html,json}
-    └── latest.{html,json}           ← git-ignored mirrors
+├── reports/                         ← harness stage-reports only
+│   ├── 2026-05-15-1620-init-foundations.{html,json}
+│   ├── 2026-05-15-1645-ic-roster-complete.{html,json}
+│   └── latest.{html,json}           ← git-ignored mirrors
+└── products/                        ← git-ignored; each product has own .git
+    └── <product-name>/
+        ├── .git/
+        ├── CLAUDE.md                ← product-specific memory
+        ├── blackboard.md            ← product blackboard
+        ├── docs/specs/              ← product specs
+        ├── reports/                 ← product stage-reports
+        └── ...                      ← product source
 ```
+
+## Products
+
+Products built by this harness live in `products/<name>/`, each with its own git repo, own remote, own CI. The harness `.gitignore` excludes `products/` so the harness stays product-agnostic and reusable across N products.
+
+**Working in a product:**
+
+- Founder cd's into `products/<name>/` before dispatching IC work on product tasks.
+- Each product has its own `CLAUDE.md`, `blackboard.md`, `docs/specs/`, `reports/` — fully self-contained.
+- Harness-level work (topology evolution, new IC, skill rewiring) stays at repo root with the harness `blackboard.md`.
+- Convention: user names the active product in the prompt; founder cd's first, then loads the product blackboard.
+
+**Currently scaffolded products:**
+
+- `products/prompt-eval-workbench/` — self-hostable prompt + eval workbench for Anthropic FDE workflow. Phase 1 sliced; awaiting Builder dispatch.
 
 ## Anti-patterns
 

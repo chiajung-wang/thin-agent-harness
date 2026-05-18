@@ -51,3 +51,7 @@ reports/latest.json
 # Blackboard runtime state — keep template, ignore live edits if you prefer
 # (uncomment if blackboard.md should not be versioned)
 # blackboard.md
+
+# Products built by this harness live in their own git repos.
+# Each product graduates as an independent codebase. Harness stays product-agnostic.
+products/
