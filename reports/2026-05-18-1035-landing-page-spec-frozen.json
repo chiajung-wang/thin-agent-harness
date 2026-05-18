@@ -1,0 +1,64 @@
+{
+  "schema_version": "1",
+  "stage": "landing-page-spec-frozen",
+  "timestamp": "2026-05-18T10:35:00+08:00",
+  "intent": "Design an agentic system framed as a startup company structure — flat, low-bureaucracy — where a founder orchestrator delegates work to IC agents and synthesizes results back into a coherent deliverable that respects user intent.",
+  "tldr": "Landing-page spec frozen (audience=hiring/portfolio, CTA=star on GitHub, host=docs/index.html + GitHub Pages); next step is designer ‖ marketer fan-out, then serial builder, then critic ship gate.",
+  "mental_model": [
+    "Dry-run as topology validator: the goal is to fire every loop edge once (parallel fan-out, serial dependency, marketer-only blackboard write, critic gate, two stage-reports), not to ship a polished page.",
+    "Audience choice as tone lock: hiring/portfolio → polished, design-thinking-forward; constrains designer (whitespace, type) and marketer (claim accuracy, no hype) jointly so their parallel outputs converge.",
+    "Fan-out boundary is the spec: designer and marketer can run in parallel only because spec fixes audience + CTA + host before they start; without that frozen contract their outputs silently diverge.",
+    "Builder serializes on creative outputs: index.html cannot be written until layout (designer) + copy (marketer) both land, so the loop bottleneck is the slower of the two — pick smaller scope first if budget tight.",
+    "Critic as the only authorized claim-checker: founder synthesis is fast but partial; Critic verifies the 'polished hiring surface' claim against the actual artifact, not against the spec."
+  ],
+  "state_delta": [
+    {"kind": "decision", "text": "Dry-run intent locked: landing page for google-agent-skill repo (intent B)."},
+    {"kind": "decision", "text": "Audience = hiring / portfolio surface; tone polished, design-thinking-forward."},
+    {"kind": "decision", "text": "Primary CTA = star on GitHub. Secondary = read the topology doc."},
+    {"kind": "decision", "text": "Host = docs/index.html + GitHub Pages."},
+    {"kind": "scope", "text": "Active spec slice 'landing page' appended to blackboard ## Spec with 5 content blocks: hero, topology diagram, mental model, tradeoffs, tech footer."},
+    {"kind": "scope", "text": "Non-goals fixed: no signup, no analytics, no backend, no JS framework. Single static HTML + inlined or CDN CSS."},
+    {"kind": "assumption", "text": "Mermaid diagram from prior IC-roster report is reusable as a starting point; designer restyles, does not redraw from scratch."},
+    {"kind": "risk", "text": "Designer and marketer fan-out may produce conflicting tone (designer leans visual minimalism, marketer leans persuasive claims). Needs founder mediation pass; exercises the conflict-resolution edge intentionally."},
+    {"kind": "risk", "text": "GitHub Pages must be enabled manually in repo settings; out of scope for this dry-run, but the page is unreachable publicly until that step is taken."}
+  ],
+  "open_questions": [
+    {"id": "q1", "text": "Reuse the IC-roster Mermaid graph verbatim, or simplify it for the landing-page audience?", "default_if_silent": "Simplify — drop decision/milestone nodes; keep founder + 5 ICs + blackboard only."},
+    {"id": "q2", "text": "Include a 'what was deliberately NOT built' (no DAG, no middle managers, no per-IC writes) section?", "default_if_silent": "Yes — that tradeoffs framing is the design-thinking signal hiring readers want."},
+    {"id": "q3", "text": "Word count target for marketer copy?", "default_if_silent": "Hero ≤ 20 words; each section ≤ 80 words; total page ≤ 400 words."},
+    {"id": "q4", "text": "Defer GitHub Pages enable to a follow-up commit, or block ship on it?", "default_if_silent": "Defer — document the manual enable step in a footer note; do not block the dry-run."}
+  ],
+  "diagram": {
+    "nodes": [
+      {"id": "intent_b", "label": "Intent: landing page dry-run", "type": "intent", "status": "in_progress"},
+      {"id": "spec_landing", "label": "Spec: landing page frozen", "type": "decision", "status": "done"},
+      {"id": "d_audience", "label": "Decision: hiring/portfolio audience", "type": "decision", "status": "done"},
+      {"id": "d_cta", "label": "Decision: CTA = star on GitHub", "type": "decision", "status": "done"},
+      {"id": "d_host", "label": "Decision: docs/index.html + GH Pages", "type": "decision", "status": "done"},
+      {"id": "m_spec_frozen", "label": "Milestone: spec frozen", "type": "milestone", "status": "done"},
+      {"id": "designer_task", "label": "Designer: layout + tokens + diagram restyle", "type": "component", "status": "pending"},
+      {"id": "marketer_task", "label": "Marketer: positioning + copy + footer", "type": "component", "status": "pending"},
+      {"id": "builder_task", "label": "Builder: docs/index.html", "type": "component", "status": "pending"},
+      {"id": "critic_task", "label": "Critic: ship-gate review", "type": "component", "status": "pending"},
+      {"id": "m_pre_ship", "label": "Milestone: pre-ship", "type": "milestone", "status": "pending"},
+      {"id": "q_pages", "label": "Enable GitHub Pages now?", "type": "question", "status": "pending"},
+      {"id": "r_tone_conflict", "label": "Risk: designer/marketer tone conflict", "type": "risk", "status": "pending"}
+    ],
+    "edges": [
+      {"from": "intent_b", "to": "spec_landing", "kind": "decided_by"},
+      {"from": "intent_b", "to": "d_audience", "kind": "decided_by"},
+      {"from": "intent_b", "to": "d_cta", "kind": "decided_by"},
+      {"from": "intent_b", "to": "d_host", "kind": "decided_by"},
+      {"from": "m_spec_frozen", "to": "spec_landing", "kind": "depends_on"},
+      {"from": "designer_task", "to": "m_spec_frozen", "kind": "depends_on"},
+      {"from": "marketer_task", "to": "m_spec_frozen", "kind": "depends_on"},
+      {"from": "builder_task", "to": "designer_task", "kind": "depends_on"},
+      {"from": "builder_task", "to": "marketer_task", "kind": "depends_on"},
+      {"from": "critic_task", "to": "builder_task", "kind": "depends_on"},
+      {"from": "m_pre_ship", "to": "critic_task", "kind": "depends_on"},
+      {"from": "q_pages", "to": "m_pre_ship", "kind": "blocks"},
+      {"from": "r_tone_conflict", "to": "builder_task", "kind": "blocks"}
+    ]
+  },
+  "prior_report": "2026-05-15-1645-ic-roster-complete.json"
+}

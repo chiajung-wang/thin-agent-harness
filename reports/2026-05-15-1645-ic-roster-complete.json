@@ -1,0 +1,75 @@
+{
+  "schema_version": "1",
+  "stage": "ic-roster-complete",
+  "timestamp": "2026-05-15T16:45:00+08:00",
+  "intent": "Design an agentic system framed as a startup company structure — flat, low-bureaucracy — where a founder orchestrator delegates work to IC agents and synthesizes results back into a coherent deliverable that respects user intent.",
+  "tldr": "Full IC roster (builder, researcher, designer, marketer, critic) and founder-side skill table landed in commit 946c8c7; topology is now structurally complete and ready for end-to-end dry-run.",
+  "mental_model": [
+    "IC template as a contract: every IC shares the same shape — frontmatter, responsibilities, JSON in/out, operating rules, skill table, anti-patterns, escalation, blackboard rules — so the founder can route without reading each file in full.",
+    "Skill tables as procedural overrides: each agent maps domain triggers to addy-agent-skills, turning improvised reasoning into named playbooks that can be audited via skills_invoked.",
+    "Blackboard write asymmetry: only founder writes Decisions and Spec; only Marketer writes Positioning; all other ICs are read-only and return through founder synthesis.",
+    "Severity ladder as the ship gate: Critic returns verdict + severity-tagged findings (blocker/major/minor/nit) instead of fixing — preserves founder's authority over remediation.",
+    "Verification ladder as cheapest-signal-first: Builder climbs typecheck → lint → targeted test → smoke run and stops at first real signal, avoiding full-suite cost on small changes."
+  ],
+  "state_delta": [
+    {"kind": "decision", "text": "Full IC roster landed (builder, researcher, designer, marketer, critic) in commit 946c8c7 following the same template."},
+    {"kind": "decision", "text": "Every IC + founder wired to addy-agent-skills via a Skill references table; return JSON gains skills_invoked field for audit."},
+    {"kind": "decision", "text": "Marketer is the only IC permitted to append to the blackboard (## Positioning section)."},
+    {"kind": "decision", "text": "Builder verification ladder fixed: typecheck → lint → targeted test → smoke run; stop at first real signal."},
+    {"kind": "decision", "text": "Critic is a one-pass ship gate with severity-tagged findings (blocker|major|minor|nit) and verdict go|no-go|conditional; never writes fixes."},
+    {"kind": "scope", "text": "Added .claude/agents/{builder,researcher,designer,marketer,critic}.md and extended .claude/agents/founder.md with its own skill table."},
+    {"kind": "assumption", "text": "Sibling subagents drafting designer, marketer, critic in parallel produced consistent output by being briefed to follow builder.md and researcher.md as templates."},
+    {"kind": "risk", "text": "Skill tables on each agent may drift across agents over time; no enforced lint to keep them aligned with the addy-agent-skills marketplace."},
+    {"kind": "risk", "text": "Topology has not yet been exercised end-to-end against a sample intent; loop semantics (parallel fan-out, conflict resolution, stage-report cadence) are unverified."},
+    {"kind": "risk", "text": "blackboard.md is a single-writer file; concurrent IC appends (only Marketer for now) could clobber if future ICs gain write access."}
+  ],
+  "open_questions": [
+    {"id": "q1", "text": "Where does the runtime blackboard.md live in a deployed project?", "default_if_silent": "Project root, sibling to .claude/."},
+    {"id": "q2", "text": "Implement the fallback reporter agent now or defer until context pressure is observed?", "default_if_silent": "Defer."},
+    {"id": "q3", "text": "Add automatic growth-trigger detection (e.g., context saturation warning)?", "default_if_silent": "Defer; rely on founder judgement."},
+    {"id": "q4", "text": "Dry-run the topology against a sample project intent before declaring v1 done?", "default_if_silent": "Dry-run on a small bounded task next."},
+    {"id": "q5", "text": "Add CLAUDE.md at project root to document how to use the topology?", "default_if_silent": "Write it once dry-run validates the loop."}
+  ],
+  "diagram": {
+    "nodes": [
+      {"id": "intent", "label": "Intent: flat agentic startup", "type": "intent", "status": "in_progress"},
+      {"id": "founder", "label": "Founder agent", "type": "component", "status": "done"},
+      {"id": "builder", "label": "Builder IC", "type": "component", "status": "done"},
+      {"id": "researcher", "label": "Researcher IC", "type": "component", "status": "done"},
+      {"id": "designer", "label": "Designer IC", "type": "component", "status": "done"},
+      {"id": "marketer", "label": "Marketer IC", "type": "component", "status": "done"},
+      {"id": "critic", "label": "Critic IC", "type": "component", "status": "done"},
+      {"id": "blackboard", "label": "blackboard.md", "type": "component", "status": "done"},
+      {"id": "stage_report", "label": "stage-report skill v1", "type": "component", "status": "done"},
+      {"id": "d_skill_tables", "label": "Decision: wire ICs to addy-agent-skills", "type": "decision", "status": "done"},
+      {"id": "d_marketer_writes", "label": "Decision: Marketer owns ## Positioning", "type": "decision", "status": "done"},
+      {"id": "d_critic_gate", "label": "Decision: Critic = one-pass ship gate", "type": "decision", "status": "done"},
+      {"id": "m_ic_roster", "label": "Milestone: IC roster complete (946c8c7)", "type": "milestone", "status": "done"},
+      {"id": "q_dry_run", "label": "Dry-run topology end-to-end?", "type": "question", "status": "pending"},
+      {"id": "r_no_e2e", "label": "Risk: loop unverified end-to-end", "type": "risk", "status": "pending"}
+    ],
+    "edges": [
+      {"from": "founder", "to": "intent", "kind": "produces"},
+      {"from": "builder", "to": "founder", "kind": "depends_on"},
+      {"from": "researcher", "to": "founder", "kind": "depends_on"},
+      {"from": "designer", "to": "founder", "kind": "depends_on"},
+      {"from": "marketer", "to": "founder", "kind": "depends_on"},
+      {"from": "critic", "to": "founder", "kind": "depends_on"},
+      {"from": "founder", "to": "blackboard", "kind": "depends_on"},
+      {"from": "marketer", "to": "blackboard", "kind": "produces"},
+      {"from": "founder", "to": "stage_report", "kind": "produces"},
+      {"from": "builder", "to": "d_skill_tables", "kind": "decided_by"},
+      {"from": "researcher", "to": "d_skill_tables", "kind": "decided_by"},
+      {"from": "marketer", "to": "d_marketer_writes", "kind": "decided_by"},
+      {"from": "critic", "to": "d_critic_gate", "kind": "decided_by"},
+      {"from": "m_ic_roster", "to": "builder", "kind": "depends_on"},
+      {"from": "m_ic_roster", "to": "researcher", "kind": "depends_on"},
+      {"from": "m_ic_roster", "to": "designer", "kind": "depends_on"},
+      {"from": "m_ic_roster", "to": "marketer", "kind": "depends_on"},
+      {"from": "m_ic_roster", "to": "critic", "kind": "depends_on"},
+      {"from": "q_dry_run", "to": "intent", "kind": "blocks"},
+      {"from": "r_no_e2e", "to": "intent", "kind": "blocks"}
+    ]
+  },
+  "prior_report": "2026-05-15-1620-init-foundations.json"
+}

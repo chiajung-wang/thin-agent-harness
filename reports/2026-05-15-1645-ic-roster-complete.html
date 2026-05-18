@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Stage Report — ic-roster-complete — 2026-05-15T16:45:00+08:00</title>
+<style>
+  body { font: 15px/1.5 ui-sans-serif, system-ui, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; color: #222; }
+  h1 { font-size: 1.4rem; margin-bottom: 0.2rem; }
+  .meta { color: #888; font-size: 0.9rem; margin-bottom: 1.5rem; }
+  h2 { font-size: 1.1rem; margin-top: 2rem; border-bottom: 1px solid #eee; padding-bottom: 0.3rem; }
+  .tldr { font-size: 1.05rem; background: #f6f8fa; padding: 0.8rem 1rem; border-left: 3px solid #0969da; }
+  .tag { display: inline-block; font-size: 0.75rem; padding: 0.1rem 0.5rem; border-radius: 3px; margin-right: 0.4rem; }
+  .tag-decision { background: #dcfce7; color: #166534; }
+  .tag-assumption { background: #fef3c7; color: #92400e; }
+  .tag-risk { background: #fee2e2; color: #991b1b; }
+  .tag-scope { background: #e0e7ff; color: #3730a3; }
+  ol li { margin-bottom: 0.6rem; }
+  .default { color: #666; font-size: 0.9rem; font-style: italic; }
+  .mermaid { background: #fafbfc; padding: 1rem; border-radius: 6px; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad: true, theme: 'default' });</script>
+</head>
+<body>
+<h1>Stage Report — ic-roster-complete</h1>
+<div class="meta">2026-05-15T16:45:00+08:00 · intent: <em>Design an agentic system framed as a startup company structure — flat, low-bureaucracy — where a founder orchestrator delegates work to IC agents and synthesizes results back into a coherent deliverable that respects user intent.</em></div>
+
+<h2>TL;DR</h2>
+<div class="tldr">Full IC roster (builder, researcher, designer, marketer, critic) and founder-side skill table landed in commit 946c8c7; topology is now structurally complete and ready for end-to-end dry-run.</div>
+
+<h2>Mental model</h2>
+<ul>
+  <li>IC template as a contract: every IC shares the same shape — frontmatter, responsibilities, JSON in/out, operating rules, skill table, anti-patterns, escalation, blackboard rules — so the founder can route without reading each file in full.</li>
+  <li>Skill tables as procedural overrides: each agent maps domain triggers to addy-agent-skills, turning improvised reasoning into named playbooks that can be audited via skills_invoked.</li>
+  <li>Blackboard write asymmetry: only founder writes Decisions and Spec; only Marketer writes Positioning; all other ICs are read-only and return through founder synthesis.</li>
+  <li>Severity ladder as the ship gate: Critic returns verdict + severity-tagged findings (blocker/major/minor/nit) instead of fixing — preserves founder's authority over remediation.</li>
+  <li>Verification ladder as cheapest-signal-first: Builder climbs typecheck → lint → targeted test → smoke run and stops at first real signal, avoiding full-suite cost on small changes.</li>
+</ul>
+
+<h2>State delta</h2>
+<ul>
+  <li><span class="tag tag-decision">decision</span>Full IC roster landed (builder, researcher, designer, marketer, critic) in commit 946c8c7 following the same template.</li>
+  <li><span class="tag tag-decision">decision</span>Every IC + founder wired to addy-agent-skills via a Skill references table; return JSON gains skills_invoked field for audit.</li>
+  <li><span class="tag tag-decision">decision</span>Marketer is the only IC permitted to append to the blackboard (## Positioning section).</li>
+  <li><span class="tag tag-decision">decision</span>Builder verification ladder fixed: typecheck → lint → targeted test → smoke run; stop at first real signal.</li>
+  <li><span class="tag tag-decision">decision</span>Critic is a one-pass ship gate with severity-tagged findings (blocker|major|minor|nit) and verdict go|no-go|conditional; never writes fixes.</li>
+  <li><span class="tag tag-scope">scope</span>Added .claude/agents/{builder,researcher,designer,marketer,critic}.md and extended .claude/agents/founder.md with its own skill table.</li>
+  <li><span class="tag tag-assumption">assumption</span>Sibling subagents drafting designer, marketer, critic in parallel produced consistent output by being briefed to follow builder.md and researcher.md as templates.</li>
+  <li><span class="tag tag-risk">risk</span>Skill tables on each agent may drift across agents over time; no enforced lint to keep them aligned with the addy-agent-skills marketplace.</li>
+  <li><span class="tag tag-risk">risk</span>Topology has not yet been exercised end-to-end against a sample intent; loop semantics (parallel fan-out, conflict resolution, stage-report cadence) are unverified.</li>
+  <li><span class="tag tag-risk">risk</span>blackboard.md is a single-writer file; concurrent IC appends (only Marketer for now) could clobber if future ICs gain write access.</li>
+</ul>
+
+<h2>Open questions</h2>
+<ol>
+  <li>Where does the runtime blackboard.md live in a deployed project?<br><span class="default">default if silent: Project root, sibling to .claude/.</span></li>
+  <li>Implement the fallback reporter agent now or defer until context pressure is observed?<br><span class="default">default if silent: Defer.</span></li>
+  <li>Add automatic growth-trigger detection (e.g., context saturation warning)?<br><span class="default">default if silent: Defer; rely on founder judgement.</span></li>
+  <li>Dry-run the topology against a sample project intent before declaring v1 done?<br><span class="default">default if silent: Dry-run on a small bounded task next.</span></li>
+  <li>Add CLAUDE.md at project root to document how to use the topology?<br><span class="default">default if silent: Write it once dry-run validates the loop.</span></li>
+</ol>
+
+<h2>Diagram</h2>
+<div class="mermaid">
+graph TD
+  intent["Intent: flat agentic startup"]:::sin_progress
+  founder["Founder agent"]:::sdone
+  builder["Builder IC"]:::sdone
+  researcher["Researcher IC"]:::sdone
+  designer["Designer IC"]:::sdone
+  marketer["Marketer IC"]:::sdone
+  critic["Critic IC"]:::sdone
+  blackboard["blackboard.md"]:::sdone
+  stage_report["stage-report skill v1"]:::sdone
+  d_skill_tables["Decision: wire ICs to addy-agent-skills"]:::sdone
+  d_marketer_writes["Decision: Marketer owns ## Positioning"]:::sdone
+  d_critic_gate["Decision: Critic = one-pass ship gate"]:::sdone
+  m_ic_roster["Milestone: IC roster complete (946c8c7)"]:::sdone
+  q_dry_run["Dry-run topology end-to-end?"]:::spending
+  r_no_e2e["Risk: loop unverified end-to-end"]:::spending
+
+  founder -->|produces| intent
+  builder -->|depends_on| founder
+  researcher -->|depends_on| founder
+  designer -->|depends_on| founder
+  marketer -->|depends_on| founder
+  critic -->|depends_on| founder
+  founder -->|depends_on| blackboard
+  marketer -->|produces| blackboard
+  founder -->|produces| stage_report
+  builder -->|decided_by| d_skill_tables
+  researcher -->|decided_by| d_skill_tables
+  marketer -->|decided_by| d_marketer_writes
+  critic -->|decided_by| d_critic_gate
+  m_ic_roster -->|depends_on| builder
+  m_ic_roster -->|depends_on| researcher
+  m_ic_roster -->|depends_on| designer
+  m_ic_roster -->|depends_on| marketer
+  m_ic_roster -->|depends_on| critic
+  q_dry_run -->|blocks| intent
+  r_no_e2e -->|blocks| intent
+
+  classDef spending fill:#f6f8fa,stroke:#888;
+  classDef sin_progress fill:#dbeafe,stroke:#0969da;
+  classDef sdone fill:#dcfce7,stroke:#166534;
+  classDef sblocked fill:#fee2e2,stroke:#991b1b;
+  classDef sdeferred fill:#f3f4f6,stroke:#666,stroke-dasharray: 4 2;
+</div>
+</body>
+</html>

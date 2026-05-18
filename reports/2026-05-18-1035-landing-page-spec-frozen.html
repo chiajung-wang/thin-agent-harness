@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Stage Report — landing-page-spec-frozen — 2026-05-18T10:35:00+08:00</title>
+<style>
+  body { font: 15px/1.5 ui-sans-serif, system-ui, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; color: #222; }
+  h1 { font-size: 1.4rem; margin-bottom: 0.2rem; }
+  .meta { color: #888; font-size: 0.9rem; margin-bottom: 1.5rem; }
+  h2 { font-size: 1.1rem; margin-top: 2rem; border-bottom: 1px solid #eee; padding-bottom: 0.3rem; }
+  .tldr { font-size: 1.05rem; background: #f6f8fa; padding: 0.8rem 1rem; border-left: 3px solid #0969da; }
+  .tag { display: inline-block; font-size: 0.75rem; padding: 0.1rem 0.5rem; border-radius: 3px; margin-right: 0.4rem; }
+  .tag-decision { background: #dcfce7; color: #166534; }
+  .tag-assumption { background: #fef3c7; color: #92400e; }
+  .tag-risk { background: #fee2e2; color: #991b1b; }
+  .tag-scope { background: #e0e7ff; color: #3730a3; }
+  ol li { margin-bottom: 0.6rem; }
+  .default { color: #666; font-size: 0.9rem; font-style: italic; }
+  .mermaid { background: #fafbfc; padding: 1rem; border-radius: 6px; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad: true, theme: 'default' });</script>
+</head>
+<body>
+<h1>Stage Report — landing-page-spec-frozen</h1>
+<div class="meta">2026-05-18T10:35:00+08:00 · intent: <em>Design an agentic system framed as a startup company structure — flat, low-bureaucracy — where a founder orchestrator delegates work to IC agents and synthesizes results back into a coherent deliverable that respects user intent.</em></div>
+
+<h2>TL;DR</h2>
+<div class="tldr">Landing-page spec frozen (audience=hiring/portfolio, CTA=star on GitHub, host=docs/index.html + GitHub Pages); next step is designer ‖ marketer fan-out, then serial builder, then critic ship gate.</div>
+
+<h2>Mental model</h2>
+<ul>
+  <li>Dry-run as topology validator: the goal is to fire every loop edge once (parallel fan-out, serial dependency, marketer-only blackboard write, critic gate, two stage-reports), not to ship a polished page.</li>
+  <li>Audience choice as tone lock: hiring/portfolio → polished, design-thinking-forward; constrains designer (whitespace, type) and marketer (claim accuracy, no hype) jointly so their parallel outputs converge.</li>
+  <li>Fan-out boundary is the spec: designer and marketer can run in parallel only because spec fixes audience + CTA + host before they start; without that frozen contract their outputs silently diverge.</li>
+  <li>Builder serializes on creative outputs: index.html cannot be written until layout (designer) + copy (marketer) both land, so the loop bottleneck is the slower of the two — pick smaller scope first if budget tight.</li>
+  <li>Critic as the only authorized claim-checker: founder synthesis is fast but partial; Critic verifies the "polished hiring surface" claim against the actual artifact, not against the spec.</li>
+</ul>
+
+<h2>State delta</h2>
+<ul>
+  <li><span class="tag tag-decision">decision</span>Dry-run intent locked: landing page for google-agent-skill repo (intent B).</li>
+  <li><span class="tag tag-decision">decision</span>Audience = hiring / portfolio surface; tone polished, design-thinking-forward.</li>
+  <li><span class="tag tag-decision">decision</span>Primary CTA = star on GitHub. Secondary = read the topology doc.</li>
+  <li><span class="tag tag-decision">decision</span>Host = docs/index.html + GitHub Pages.</li>
+  <li><span class="tag tag-scope">scope</span>Active spec slice 'landing page' appended to blackboard ## Spec with 5 content blocks: hero, topology diagram, mental model, tradeoffs, tech footer.</li>
+  <li><span class="tag tag-scope">scope</span>Non-goals fixed: no signup, no analytics, no backend, no JS framework. Single static HTML + inlined or CDN CSS.</li>
+  <li><span class="tag tag-assumption">assumption</span>Mermaid diagram from prior IC-roster report is reusable as a starting point; designer restyles, does not redraw from scratch.</li>
+  <li><span class="tag tag-risk">risk</span>Designer and marketer fan-out may produce conflicting tone (designer leans visual minimalism, marketer leans persuasive claims). Needs founder mediation pass; exercises the conflict-resolution edge intentionally.</li>
+  <li><span class="tag tag-risk">risk</span>GitHub Pages must be enabled manually in repo settings; out of scope for this dry-run, but the page is unreachable publicly until that step is taken.</li>
+</ul>
+
+<h2>Open questions</h2>
+<ol>
+  <li>Reuse the IC-roster Mermaid graph verbatim, or simplify it for the landing-page audience?<br><span class="default">default if silent: Simplify — drop decision/milestone nodes; keep founder + 5 ICs + blackboard only.</span></li>
+  <li>Include a "what was deliberately NOT built" (no DAG, no middle managers, no per-IC writes) section?<br><span class="default">default if silent: Yes — that tradeoffs framing is the design-thinking signal hiring readers want.</span></li>
+  <li>Word count target for marketer copy?<br><span class="default">default if silent: Hero ≤ 20 words; each section ≤ 80 words; total page ≤ 400 words.</span></li>
+  <li>Defer GitHub Pages enable to a follow-up commit, or block ship on it?<br><span class="default">default if silent: Defer — document the manual enable step in a footer note; do not block the dry-run.</span></li>
+</ol>
+
+<h2>Diagram</h2>
+<div class="mermaid">
+graph TD
+  intent_b["Intent: landing page dry-run"]:::sin_progress
+  spec_landing["Spec: landing page frozen"]:::sdone
+  d_audience["Decision: hiring/portfolio audience"]:::sdone
+  d_cta["Decision: CTA = star on GitHub"]:::sdone
+  d_host["Decision: docs/index.html + GH Pages"]:::sdone
+  m_spec_frozen["Milestone: spec frozen"]:::sdone
+  designer_task["Designer: layout + tokens + diagram restyle"]:::spending
+  marketer_task["Marketer: positioning + copy + footer"]:::spending
+  builder_task["Builder: docs/index.html"]:::spending
+  critic_task["Critic: ship-gate review"]:::spending
+  m_pre_ship["Milestone: pre-ship"]:::spending
+  q_pages["Enable GitHub Pages now?"]:::spending
+  r_tone_conflict["Risk: designer/marketer tone conflict"]:::spending
+
+  intent_b -->|decided_by| spec_landing
+  intent_b -->|decided_by| d_audience
+  intent_b -->|decided_by| d_cta
+  intent_b -->|decided_by| d_host
+  m_spec_frozen -->|depends_on| spec_landing
+  designer_task -->|depends_on| m_spec_frozen
+  marketer_task -->|depends_on| m_spec_frozen
+  builder_task -->|depends_on| designer_task
+  builder_task -->|depends_on| marketer_task
+  critic_task -->|depends_on| builder_task
+  m_pre_ship -->|depends_on| critic_task
+  q_pages -->|blocks| m_pre_ship
+  r_tone_conflict -->|blocks| builder_task
+
+  classDef spending fill:#f6f8fa,stroke:#888;
+  classDef sin_progress fill:#dbeafe,stroke:#0969da;
+  classDef sdone fill:#dcfce7,stroke:#166534;
+  classDef sblocked fill:#fee2e2,stroke:#991b1b;
+  classDef sdeferred fill:#f3f4f6,stroke:#666,stroke-dasharray: 4 2;
+</div>
+</body>
+</html>
