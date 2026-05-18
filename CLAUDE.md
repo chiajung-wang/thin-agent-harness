@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Project memory for the `google-agent-skill` repo. Read this on session start before touching anything.
+Project memory for the `thin-agent-harness` repo. Read this on session start before touching anything.
 
 ## What this project is
 
