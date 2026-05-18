@@ -1,0 +1,69 @@
+{
+  "schema_version": "1",
+  "stage": "landing-page-pre-ship",
+  "timestamp": "2026-05-18T11:05:00+08:00",
+  "intent": "Design an agentic system framed as a startup company structure — flat, low-bureaucracy — where a founder orchestrator delegates work to IC agents and synthesizes results back into a coherent deliverable that respects user intent.",
+  "tldr": "Landing page docs/index.html shipped through full IC loop (designer ‖ marketer → builder → critic) with conditional verdict resolved inline (1 major dismissed, 2 minors fixed, 1 deferred); v1 topology validated end-to-end.",
+  "mental_model": [
+    "Conditional → go transition as loop maturity signal: founder must triage critic findings, dismiss false positives with evidence, fix trivial ones inline, defer with explicit reason — not blanket-accept or blanket-fix.",
+    "Inline fix vs Builder re-dispatch tradeoff: 2-line a11y patch (skip-nav + aria-hidden removal) is below dispatch overhead; founder edits directly and logs decision, exercising the 'no IC for one-line task' anti-pattern guard.",
+    "Critic miscount as a dry-run finding: even with structured contracts, ICs make arithmetic errors; founder must verify claims against the artifact, not trust IC summaries (Marketer self-reported 17 words, actual is 16).",
+    "Marketer's only-write privilege exercised cleanly: ## Positioning now contains one-liner, ICP, value prop, and three objections — proves the write-asymmetry rule survives contact with a real fan-out.",
+    "Dry-run completeness: every founder-loop edge has fired at least once — restate intent, parallel fan-out, serial dispatch, synthesis with conflict, critic ship gate, two stage-reports, inline conflict resolution. Topology v1 validated end-to-end."
+  ],
+  "state_delta": [
+    {"kind": "scope", "text": "docs/index.html written by Builder (445 lines, 317 body words, all 5 content blocks in order: hero, topology, mental model, tradeoffs, tech footer)."},
+    {"kind": "scope", "text": "blackboard ## Positioning authored by Marketer IC (one-liner, ICP, value prop, 3 objections with cites)."},
+    {"kind": "scope", "text": "Founder inline-edited docs/index.html: added .skip-nav anchor + CSS + id='main-content' on <main>; removed aria-hidden from hero eyebrow."},
+    {"kind": "decision", "text": "Critic ship-gate verdict 'conditional': 1 major + 3 minors + 1 nit."},
+    {"kind": "decision", "text": "Major (hero subhead word mismatch) dismissed as false positive — page text matches Marketer's `subhead` field byte-for-byte; actual word count is 16, Marketer self-miscounted as 17."},
+    {"kind": "decision", "text": "Minor SRI hash on Mermaid CDN deferred — low risk for portfolio page; logged as known."},
+    {"kind": "decision", "text": "Two a11y minors (eyebrow aria-hidden; missing skip-nav) fixed inline by founder; Builder re-dispatch skipped (below dispatch threshold per CLAUDE.md anti-pattern)."},
+    {"kind": "decision", "text": "Two nits skipped (redundant mermaid.initialize alongside %%{init}%% directive; fallback text placement was a no-op note from Critic)."},
+    {"kind": "risk", "text": "Page unreachable publicly until user manually enables GitHub Pages in repo Settings → Pages (source: main, folder: /docs). Instructions visible in page footer."},
+    {"kind": "risk", "text": "Mermaid CDN compromise can inject arbitrary JS into the page without SRI. Accepted given portfolio-page risk profile; revisit if page is linked from a professional channel."},
+    {"kind": "assumption", "text": "Critic's claims-audit (13 claims, all status=supported) is sufficient evidence that the 5 mental-model bullets + 3 tradeoff rationales trace to CLAUDE.md / agentic-startup-topology.md / blackboard decisions."},
+    {"kind": "assumption", "text": "Builder's browser-render verification (open docs/index.html, Mermaid CDN reachable) accepted as ship-readiness signal; founder did not re-verify in browser."}
+  ],
+  "open_questions": [
+    {"id": "q1", "text": "Commit + push the landing page now, or hold for user review of docs/index.html in browser first?", "default_if_silent": "Hold — user opens docs/index.html locally; on approval, commit and push."},
+    {"id": "q2", "text": "Enable GitHub Pages now (repo Settings → Pages → branch: main, folder: /docs)?", "default_if_silent": "Defer to user; instructions already visible in page footer."},
+    {"id": "q3", "text": "Retire root-level blackboard open questions q4 (dry-run validation) and q5 (CLAUDE.md) now that both are done?", "default_if_silent": "Retire both in the commit that lands the page; append a closing note to ## Decisions."},
+    {"id": "q4", "text": "Add SRI hash to the Mermaid CDN script before any public link-out?", "default_if_silent": "Defer; document as a known risk in blackboard. Revisit if the page is shared on LinkedIn or similar."}
+  ],
+  "diagram": {
+    "nodes": [
+      {"id": "intent_b", "label": "Intent: landing page dry-run", "type": "intent", "status": "done"},
+      {"id": "designer_done", "label": "Designer: spec returned", "type": "component", "status": "done"},
+      {"id": "marketer_done", "label": "Marketer: copy + positioning", "type": "component", "status": "done"},
+      {"id": "positioning", "label": "blackboard ## Positioning", "type": "component", "status": "done"},
+      {"id": "builder_done", "label": "Builder: docs/index.html (445 lines)", "type": "component", "status": "done"},
+      {"id": "critic_done", "label": "Critic: verdict conditional", "type": "component", "status": "done"},
+      {"id": "f_subhead_dismissed", "label": "Major dismissed (false positive)", "type": "decision", "status": "done"},
+      {"id": "f_sri_deferred", "label": "SRI hash deferred", "type": "decision", "status": "deferred"},
+      {"id": "f_eyebrow_fixed", "label": "Eyebrow aria-hidden removed", "type": "decision", "status": "done"},
+      {"id": "f_skipnav_fixed", "label": "Skip-nav anchor added", "type": "decision", "status": "done"},
+      {"id": "m_pre_ship", "label": "Milestone: pre-ship", "type": "milestone", "status": "done"},
+      {"id": "m_ship", "label": "Milestone: ship (commit + Pages enable)", "type": "milestone", "status": "pending"},
+      {"id": "q_pages_enable", "label": "Enable GitHub Pages?", "type": "question", "status": "pending"},
+      {"id": "r_sri_accepted", "label": "Risk: Mermaid CDN no-SRI (accepted)", "type": "risk", "status": "deferred"}
+    ],
+    "edges": [
+      {"from": "designer_done", "to": "intent_b", "kind": "produces"},
+      {"from": "marketer_done", "to": "intent_b", "kind": "produces"},
+      {"from": "positioning", "to": "marketer_done", "kind": "produces"},
+      {"from": "builder_done", "to": "designer_done", "kind": "depends_on"},
+      {"from": "builder_done", "to": "marketer_done", "kind": "depends_on"},
+      {"from": "critic_done", "to": "builder_done", "kind": "depends_on"},
+      {"from": "f_subhead_dismissed", "to": "critic_done", "kind": "decided_by"},
+      {"from": "f_sri_deferred", "to": "critic_done", "kind": "decided_by"},
+      {"from": "f_eyebrow_fixed", "to": "critic_done", "kind": "decided_by"},
+      {"from": "f_skipnav_fixed", "to": "critic_done", "kind": "decided_by"},
+      {"from": "m_pre_ship", "to": "critic_done", "kind": "depends_on"},
+      {"from": "m_ship", "to": "m_pre_ship", "kind": "depends_on"},
+      {"from": "q_pages_enable", "to": "m_ship", "kind": "blocks"},
+      {"from": "r_sri_accepted", "to": "m_ship", "kind": "blocks"}
+    ]
+  },
+  "prior_report": "2026-05-18-1035-landing-page-spec-frozen.json"
+}

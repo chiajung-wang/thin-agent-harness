@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Stage Report — landing-page-pre-ship — 2026-05-18T11:05:00+08:00</title>
+<style>
+  body { font: 15px/1.5 ui-sans-serif, system-ui, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; color: #222; }
+  h1 { font-size: 1.4rem; margin-bottom: 0.2rem; }
+  .meta { color: #888; font-size: 0.9rem; margin-bottom: 1.5rem; }
+  h2 { font-size: 1.1rem; margin-top: 2rem; border-bottom: 1px solid #eee; padding-bottom: 0.3rem; }
+  .tldr { font-size: 1.05rem; background: #f6f8fa; padding: 0.8rem 1rem; border-left: 3px solid #0969da; }
+  .tag { display: inline-block; font-size: 0.75rem; padding: 0.1rem 0.5rem; border-radius: 3px; margin-right: 0.4rem; }
+  .tag-decision { background: #dcfce7; color: #166534; }
+  .tag-assumption { background: #fef3c7; color: #92400e; }
+  .tag-risk { background: #fee2e2; color: #991b1b; }
+  .tag-scope { background: #e0e7ff; color: #3730a3; }
+  ol li { margin-bottom: 0.6rem; }
+  .default { color: #666; font-size: 0.9rem; font-style: italic; }
+  .mermaid { background: #fafbfc; padding: 1rem; border-radius: 6px; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad: true, theme: 'default' });</script>
+</head>
+<body>
+<h1>Stage Report — landing-page-pre-ship</h1>
+<div class="meta">2026-05-18T11:05:00+08:00 · intent: <em>Design an agentic system framed as a startup company structure — flat, low-bureaucracy — where a founder orchestrator delegates work to IC agents and synthesizes results back into a coherent deliverable that respects user intent.</em></div>
+
+<h2>TL;DR</h2>
+<div class="tldr">Landing page docs/index.html shipped through full IC loop (designer ‖ marketer → builder → critic) with conditional verdict resolved inline (1 major dismissed, 2 minors fixed, 1 deferred); v1 topology validated end-to-end.</div>
+
+<h2>Mental model</h2>
+<ul>
+  <li>Conditional → go transition as loop maturity signal: founder must triage critic findings, dismiss false positives with evidence, fix trivial ones inline, defer with explicit reason — not blanket-accept or blanket-fix.</li>
+  <li>Inline fix vs Builder re-dispatch tradeoff: 2-line a11y patch (skip-nav + aria-hidden removal) is below dispatch overhead; founder edits directly and logs decision, exercising the "no IC for one-line task" anti-pattern guard.</li>
+  <li>Critic miscount as a dry-run finding: even with structured contracts, ICs make arithmetic errors; founder must verify claims against the artifact, not trust IC summaries (Marketer self-reported 17 words, actual is 16).</li>
+  <li>Marketer's only-write privilege exercised cleanly: ## Positioning now contains one-liner, ICP, value prop, and three objections — proves the write-asymmetry rule survives contact with a real fan-out.</li>
+  <li>Dry-run completeness: every founder-loop edge has fired at least once — restate intent, parallel fan-out, serial dispatch, synthesis with conflict, critic ship gate, two stage-reports, inline conflict resolution. Topology v1 validated end-to-end.</li>
+</ul>
+
+<h2>State delta</h2>
+<ul>
+  <li><span class="tag tag-scope">scope</span>docs/index.html written by Builder (445 lines, 317 body words, all 5 content blocks in order: hero, topology, mental model, tradeoffs, tech footer).</li>
+  <li><span class="tag tag-scope">scope</span>blackboard ## Positioning authored by Marketer IC (one-liner, ICP, value prop, 3 objections with cites).</li>
+  <li><span class="tag tag-scope">scope</span>Founder inline-edited docs/index.html: added .skip-nav anchor + CSS + id="main-content" on &lt;main&gt;; removed aria-hidden from hero eyebrow.</li>
+  <li><span class="tag tag-decision">decision</span>Critic ship-gate verdict 'conditional': 1 major + 3 minors + 1 nit.</li>
+  <li><span class="tag tag-decision">decision</span>Major (hero subhead word mismatch) dismissed as false positive — page text matches Marketer's `subhead` field byte-for-byte; actual word count is 16, Marketer self-miscounted as 17.</li>
+  <li><span class="tag tag-decision">decision</span>Minor SRI hash on Mermaid CDN deferred — low risk for portfolio page; logged as known.</li>
+  <li><span class="tag tag-decision">decision</span>Two a11y minors (eyebrow aria-hidden; missing skip-nav) fixed inline by founder; Builder re-dispatch skipped (below dispatch threshold per CLAUDE.md anti-pattern).</li>
+  <li><span class="tag tag-decision">decision</span>Two nits skipped (redundant mermaid.initialize alongside %%{init}%% directive; fallback text placement was a no-op note from Critic).</li>
+  <li><span class="tag tag-risk">risk</span>Page unreachable publicly until user manually enables GitHub Pages in repo Settings → Pages (source: main, folder: /docs). Instructions visible in page footer.</li>
+  <li><span class="tag tag-risk">risk</span>Mermaid CDN compromise can inject arbitrary JS into the page without SRI. Accepted given portfolio-page risk profile; revisit if page is linked from a professional channel.</li>
+  <li><span class="tag tag-assumption">assumption</span>Critic's claims-audit (13 claims, all status=supported) is sufficient evidence that the 5 mental-model bullets + 3 tradeoff rationales trace to CLAUDE.md / agentic-startup-topology.md / blackboard decisions.</li>
+  <li><span class="tag tag-assumption">assumption</span>Builder's browser-render verification (open docs/index.html, Mermaid CDN reachable) accepted as ship-readiness signal; founder did not re-verify in browser.</li>
+</ul>
+
+<h2>Open questions</h2>
+<ol>
+  <li>Commit + push the landing page now, or hold for user review of docs/index.html in browser first?<br><span class="default">default if silent: Hold — user opens docs/index.html locally; on approval, commit and push.</span></li>
+  <li>Enable GitHub Pages now (repo Settings → Pages → branch: main, folder: /docs)?<br><span class="default">default if silent: Defer to user; instructions already visible in page footer.</span></li>
+  <li>Retire root-level blackboard open questions q4 (dry-run validation) and q5 (CLAUDE.md) now that both are done?<br><span class="default">default if silent: Retire both in the commit that lands the page; append a closing note to ## Decisions.</span></li>
+  <li>Add SRI hash to the Mermaid CDN script before any public link-out?<br><span class="default">default if silent: Defer; document as a known risk in blackboard. Revisit if the page is shared on LinkedIn or similar.</span></li>
+</ol>
+
+<h2>Diagram</h2>
+<div class="mermaid">
+graph TD
+  intent_b["Intent: landing page dry-run"]:::sdone
+  designer_done["Designer: spec returned"]:::sdone
+  marketer_done["Marketer: copy + positioning"]:::sdone
+  positioning["blackboard ## Positioning"]:::sdone
+  builder_done["Builder: docs/index.html (445 lines)"]:::sdone
+  critic_done["Critic: verdict conditional"]:::sdone
+  f_subhead_dismissed["Major dismissed (false positive)"]:::sdone
+  f_sri_deferred["SRI hash deferred"]:::sdeferred
+  f_eyebrow_fixed["Eyebrow aria-hidden removed"]:::sdone
+  f_skipnav_fixed["Skip-nav anchor added"]:::sdone
+  m_pre_ship["Milestone: pre-ship"]:::sdone
+  m_ship["Milestone: ship (commit + Pages enable)"]:::spending
+  q_pages_enable["Enable GitHub Pages?"]:::spending
+  r_sri_accepted["Risk: Mermaid CDN no-SRI (accepted)"]:::sdeferred
+
+  designer_done -->|produces| intent_b
+  marketer_done -->|produces| intent_b
+  positioning -->|produces| marketer_done
+  builder_done -->|depends_on| designer_done
+  builder_done -->|depends_on| marketer_done
+  critic_done -->|depends_on| builder_done
+  f_subhead_dismissed -->|decided_by| critic_done
+  f_sri_deferred -->|decided_by| critic_done
+  f_eyebrow_fixed -->|decided_by| critic_done
+  f_skipnav_fixed -->|decided_by| critic_done
+  m_pre_ship -->|depends_on| critic_done
+  m_ship -->|depends_on| m_pre_ship
+  q_pages_enable -->|blocks| m_ship
+  r_sri_accepted -->|blocks| m_ship
+
+  classDef spending fill:#f6f8fa,stroke:#888;
+  classDef sin_progress fill:#dbeafe,stroke:#0969da;
+  classDef sdone fill:#dcfce7,stroke:#166534;
+  classDef sblocked fill:#fee2e2,stroke:#991b1b;
+  classDef sdeferred fill:#f3f4f6,stroke:#666,stroke-dasharray: 4 2;
+</div>
+</body>
+</html>
